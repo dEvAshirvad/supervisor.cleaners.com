@@ -10,7 +10,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -18,6 +17,9 @@ import { authClient, useSession } from "@/lib/auth-client";
 
 function EmployeeList({ refetch }: { refetch: boolean }) {
 	const [employees, setEmployees] = useState<any[]>([]);
+	const [open, setOpen] = useState(false);
+	const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
+	const [message, setMessage] = useState("");
 
 	useEffect(() => {
 		const fetchEmployees = async () => {
@@ -28,35 +30,63 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 					filterValue: "workers",
 				},
 			});
-			console.log(users.data?.users);
 			setEmployees(users.data?.users || []);
 		};
 		fetchEmployees();
 	}, [refetch]);
 
-	const [open, setOpen] = useState(false);
-	const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
-	const [dialogType, setDialogType] = useState<"sms" | "edit">("edit");
+	const sendMessage = async () => {
+		if (!selectedEmployee?.contact) return;
+
+		try {
+			const response = await fetch(
+				"http://localhost:3030/api/v1/message/send",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					credentials: "include",
+					body: JSON.stringify({
+						message,
+						numbers: selectedEmployee.contact,
+					}),
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error("Failed to send message");
+			}
+
+			setOpen(false);
+			setMessage("");
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<div>
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogContent>
-					{dialogType === "edit" ? (
-						<h1>Edit : {selectedEmployee?.name}</h1>
-					) : (
-						<div className="">
-							<Textarea placeholder="Enter SMS" />
-						</div>
-					)}
+					<DialogHeader>
+						<DialogTitle>Send Message</DialogTitle>
+						<DialogDescription>
+							Send message to {selectedEmployee?.name}
+						</DialogDescription>
+					</DialogHeader>
+					<div className="space-y-4">
+						<Textarea
+							placeholder="Enter your message"
+							value={message}
+							onChange={(e) => setMessage(e.target.value)}
+						/>
+					</div>
 					<DialogFooter>
 						<DialogClose asChild>
 							<Button variant="outline">Cancel</Button>
 						</DialogClose>
-						{dialogType === "edit" ? (
-							<Button>Save changes</Button>
-						) : (
-							<Button>Send SMS</Button>
-						)}
+						<Button onClick={sendMessage}>Send Message</Button>
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
@@ -96,21 +126,11 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 							<Button
 								variant={"outline"}
 								onClick={() => {
-									setDialogType("edit");
 									setSelectedEmployee(employee);
 									setOpen(true);
 								}}
 								className="border-secondary text-secondary"
 								size={"sm"}>
-								Edit
-							</Button>
-							<Button
-								size={"sm"}
-								onClick={() => {
-									setDialogType("sms");
-									setSelectedEmployee(employee);
-									setOpen(true);
-								}}>
 								Send SMS
 							</Button>
 						</div>
