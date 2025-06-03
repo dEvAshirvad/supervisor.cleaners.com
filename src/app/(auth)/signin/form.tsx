@@ -108,7 +108,7 @@ export function SigninForm({
 								<span className="sr-only">Acme Inc.</span>
 							</a>
 							<h1 className="text-xl font-bold text-center w-4/5">
-								नमस्ते, आपका स्वागत है रायपुर स्वच्छ भारत पोर्टल पर
+								नमस्ते, आपका स्वागत है नगर निगम रायपुर पोर्टल पर
 							</h1>
 							{/* <div className="text-center text-sm">
 							Don&apos;t have an account?{" "}

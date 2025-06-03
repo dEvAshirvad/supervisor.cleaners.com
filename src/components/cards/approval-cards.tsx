@@ -21,7 +21,7 @@ function ApprovalCards({
 	}[];
 }) {
 	return (
-		<div className="">
+		<div className="space-y-2">
 			{cards.length > 0 ? (
 				cards.map((card) => (
 					<Card className="bg-primary/30 border-l-primary border-l-4 rounded-md">

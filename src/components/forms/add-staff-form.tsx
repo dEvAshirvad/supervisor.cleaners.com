@@ -26,11 +26,19 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import {
+	Select,
+	SelectItem,
+	SelectContent,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
 	name: z.string().min(2).max(50),
 	email: z.string().min(2).max(50),
 	contact: z.string().min(2).max(50),
+	assignedWard: z.string().min(2).max(50),
 });
 
 function AddStaffForm({
@@ -48,6 +56,7 @@ function AddStaffForm({
 			name: "",
 			email: "",
 			contact: "",
+			assignedWard: "",
 		},
 	});
 
@@ -65,9 +74,10 @@ function AddStaffForm({
 					contact: values.contact,
 					username: username,
 					displayUsername: username,
+					assignedWard: values.assignedWard,
 					createdBy: session?.user?.id.toString(),
 				},
-				role: "workers",
+				role: "supervisor",
 			});
 			setModalMessageType("success");
 			setModel(true);
@@ -96,7 +106,7 @@ function AddStaffForm({
 						</DialogTitle>
 						<DialogDescription>
 							{modalMessageType === "success"
-								? "Staff has been added successfully"
+								? "Supervisor has been added successfully"
 								: "Something went wrong"}
 						</DialogDescription>
 					</DialogHeader>
@@ -143,9 +153,38 @@ function AddStaffForm({
 							</FormItem>
 						)}
 					/>
+					<FormField
+						control={form.control}
+						name="assignedWard"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Assigned Ward</FormLabel>
+								<FormControl>
+									<Select onValueChange={field.onChange} value={field.value}>
+										<SelectTrigger>
+											<SelectValue placeholder="Select Ward" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="ward 1">Ward 1</SelectItem>
+											<SelectItem value="ward 2">Ward 2</SelectItem>
+											<SelectItem value="ward 3">Ward 3</SelectItem>
+											<SelectItem value="ward 4">Ward 4</SelectItem>
+											<SelectItem value="ward 5">Ward 5</SelectItem>
+											<SelectItem value="ward 6">Ward 6</SelectItem>
+											<SelectItem value="ward 7">Ward 7</SelectItem>
+											<SelectItem value="ward 8">Ward 8</SelectItem>
+											<SelectItem value="ward 9">Ward 9</SelectItem>
+											<SelectItem value="ward 10">Ward 10</SelectItem>
+										</SelectContent>
+									</Select>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 				</div>
 				<Button type="submit" size={"lg"} className="lg:w-fit w-full">
-					Add Staff
+					Add Supervisor
 				</Button>
 			</form>
 		</Form>

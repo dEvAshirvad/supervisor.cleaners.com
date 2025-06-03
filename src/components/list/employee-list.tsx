@@ -27,43 +27,13 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 				query: {
 					filterField: "role",
 					filterOperator: "eq",
-					filterValue: "workers",
+					filterValue: "supervisor",
 				},
 			});
 			setEmployees(users.data?.users || []);
 		};
 		fetchEmployees();
 	}, [refetch]);
-
-	const sendMessage = async () => {
-		if (!selectedEmployee?.contact) return;
-
-		try {
-			const response = await fetch(
-				"http://localhost:3030/api/v1/message/send",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					credentials: "include",
-					body: JSON.stringify({
-						message,
-						numbers: selectedEmployee.contact,
-					}),
-				}
-			);
-
-			if (!response.ok) {
-				throw new Error("Failed to send message");
-			}
-
-			setOpen(false);
-			setMessage("");
-		} catch (err) {
-			console.error(err);
-		}
-	};
 
 	return (
 		<div>
@@ -86,18 +56,17 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 						<DialogClose asChild>
 							<Button variant="outline">Cancel</Button>
 						</DialogClose>
-						<Button onClick={sendMessage}>Send Message</Button>
+						{/* <Button onClick={sendMessage}>Send Message</Button> */}
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
-			<div className="h-12 rounded-lg px-10 grid lg:grid-cols-6 grid-cols-2 odd:bg-accent">
+			<div className="h-12 rounded-lg px-10 grid lg:grid-cols-5 grid-cols-2 odd:bg-accent">
 				<p className="text-sm font-bold flex items-center">Name</p>
 				<p className="text-sm font-bold lg:flex hidden items-center">Id</p>
 				<p className="text-sm font-bold lg:flex hidden items-center">Contact</p>
 				<p className="text-sm font-bold lg:flex hidden items-center">
-					Completed Tasks
+					Assigned Ward
 				</p>
-				<p className="text-sm font-bold lg:flex hidden items-center">Points</p>
 				<p className="text-sm font-bold flex items-center justify-end lg:justify-start">
 					Actions
 				</p>
@@ -106,7 +75,7 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 				employees.map((employee, index) => (
 					<div
 						key={index}
-						className="h-12 rounded-lg px-10 grid lg:grid-cols-6 grid-cols-2 odd:bg-accent">
+						className="h-12 rounded-lg px-10 grid lg:grid-cols-5 grid-cols-2 odd:bg-accent">
 						<p className="text-sm flex font-semibold items-center">
 							{employee.name}
 						</p>
@@ -116,11 +85,8 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 						<p className="text-sm lg:flex hidden items-center">
 							{employee.contact}
 						</p>
-						<p className="text-sm lg:flex hidden items-center">
-							{employee.completedTasks}
-						</p>
-						<p className="text-sm lg:flex hidden items-center">
-							{employee.points} PT
+						<p className="text-sm lg:flex hidden items-center capitalize">
+							{employee.assignedWard}
 						</p>
 						<div className="flex items-center justify-end lg:justify-start gap-2">
 							<Button
@@ -131,7 +97,17 @@ function EmployeeList({ refetch }: { refetch: boolean }) {
 								}}
 								className="border-secondary text-secondary"
 								size={"sm"}>
-								Send SMS
+								Modify
+							</Button>
+							<Button
+								variant={"destructive"}
+								onClick={() => {
+									setSelectedEmployee(employee);
+									setOpen(true);
+								}}
+								className="border-secondary text-secondary text-black"
+								size={"sm"}>
+								Delete
 							</Button>
 						</div>
 					</div>

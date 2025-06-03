@@ -15,7 +15,6 @@ function TasksPage() {
 			<PageHeader
 				title="टास्क प्रबंधन (Tasks Management)"
 				description="स्टाफ और स्थान टास्क बनाएं और देखें (Generate and view staff and location tasks)"
-				updatedAt={new Date()}
 				refetch={() => setRefetch(!refetch)}
 			/>
 			<Sheet>

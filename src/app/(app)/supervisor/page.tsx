@@ -10,16 +10,15 @@ function StaffPage() {
 	return (
 		<>
 			<PageHeader
-				title="कर्मचारी (Staff)"
-				description="कर्मचारी की सूची"
-				updatedAt={new Date()}
+				title="सुपरवाइजर (Supervisor)"
+				description="सुपरवाइजर की सूची"
 				refetch={() => setRefetch(!refetch)}
 			/>
-			<DashboardCards title="नया स्टाफ जोड़ें (Add New Staff)">
+			<DashboardCards title="नया सुपरवाइजर जोड़ें (Add New Supervisor)">
 				<AddStaffForm refetch={() => setRefetch(!refetch)} />
 			</DashboardCards>
 			<DashboardCards
-				title="स्टाफ सूची (Staff List)"
+				title="सुपरवाइजर सूची (Supervisor List)"
 				onRefresh={() => setRefetch(!refetch)}>
 				<EmployeeList refetch={refetch} />
 			</DashboardCards>

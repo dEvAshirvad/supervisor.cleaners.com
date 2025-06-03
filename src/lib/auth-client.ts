@@ -4,7 +4,7 @@ import {
 	multiSessionClient,
 	usernameClient,
 } from "better-auth/client/plugins";
-import { supervisor, workers, ac } from "./permissions";
+import { supervisor, admin, ac } from "./permissions";
 
 export const authClient = createAuthClient({
 	baseURL: "http://localhost:3030", // The base URL of your auth server
@@ -13,11 +13,11 @@ export const authClient = createAuthClient({
 		usernameClient(),
 		adminClient({
 			ac,
-			defaultRole: "workers",
-			adminRoles: ["supervisor"],
+			defaultRole: "supervisor",
+			adminRoles: ["admin"],
 			roles: {
 				supervisor,
-				workers,
+				admin,
 			},
 		}),
 	],

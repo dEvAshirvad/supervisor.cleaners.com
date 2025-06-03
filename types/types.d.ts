@@ -2,7 +2,7 @@ type Card = {
 	title: string;
 	icon: LucideIcon;
 	progress: {
-		total: number;
+		total?: number;
 		current: number;
 	};
 };

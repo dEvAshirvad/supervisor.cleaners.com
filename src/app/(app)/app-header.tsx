@@ -22,12 +22,17 @@ function AppHeader() {
 	const { data: session, isPending, error, refetch } = useSession();
 	const pathname = usePathname();
 	return (
-		<header className="h-20 bg-background border-b shadow-md">
+		<header className="h-20 bg-accent border-b shadow-lg">
 			<nav className="flex items-center justify-between h-full px-6 container mx-auto">
 				<div className="flex items-center gap-10">
 					<div className="flex items-center gap-2">
-						<BrushCleaning className="fill-primary size-5" />
-						<h1 className="text-xl font-bold">रायपुर स्वच्छ भारत</h1>
+						<BrushCleaning className="fill-primary size-8" />
+						<div className="">
+							<h1 className="text-xl leading-none font-bold">
+								नगर निगम रायपुर
+							</h1>
+							<p className="text-xs mt-0.5">Waste Management Admin Portal</p>
+						</div>
 					</div>
 					<div className="hidden lg:flex items-center gap-4 text-sm">
 						<Link
@@ -40,7 +45,7 @@ function AppHeader() {
 							<Layout className="size-4 stroke-2" />
 							डैशबोर्ड (Dashboard)
 						</Link>
-						<Link
+						{/* <Link
 							href="/tasks"
 							className={cn(
 								"flex items-center gap-2",
@@ -49,26 +54,26 @@ function AppHeader() {
 							)}>
 							<List className="size-4 stroke-2" />
 							टास्क्स (Tasks)
-						</Link>
+						</Link> */}
 						<Link
-							href="/staff"
+							href="/supervisor"
 							className={cn(
 								"flex items-center gap-2",
-								pathname.startsWith("/staff") &&
+								pathname.startsWith("/supervisor") &&
 									"text-primary font-black border-b-2 border-secondary"
 							)}>
 							<Users className="size-4 stroke-2" />
-							कर्मचारी (Staff)
+							सुपरवाइजर (Supervisor)
 						</Link>
 						<Link
-							href="/area"
+							href="/ward"
 							className={cn(
 								"flex items-center gap-2",
-								pathname.startsWith("/area") &&
+								pathname.startsWith("/ward") &&
 									"text-primary font-black border-b-2 border-secondary"
 							)}>
 							<Map className="size-4 stroke-2" />
-							क्षेत्र (Area)
+							वाड (Ward)
 						</Link>
 						<Link
 							href="/report"
@@ -86,24 +91,21 @@ function AppHeader() {
 					{/* <Button variant="secondary" size="icon">
 						<BellDot className="fill-primary" />
 					</Button> */}
-					{session && (
-						<div className="flex items-center gap-2">
-							<Avatar className="size-8">
-								<AvatarImage src={session?.user?.image || ""} />
-								<AvatarFallback>
-									<User className="size-5" />
-								</AvatarFallback>
-							</Avatar>
-							<div className="hidden lg:block">
-								<p className="text-sm font-medium leading-none">
-									{session.user?.name}
-								</p>
-								<p className="text-xs text-muted-foreground leading-none">
-									अध्यक्ष (Supervisor)
-								</p>
-							</div>
+					{/* {session && ( */}
+					<div className="flex items-center gap-2">
+						<Avatar className="size-8">
+							<AvatarImage src={session?.user?.image || ""} />
+							<AvatarFallback>
+								<User className="size-5" />
+							</AvatarFallback>
+						</Avatar>
+						<div className="hidden lg:block">
+							<p className="text-sm font-medium leading-none">
+								{session?.user?.name || "Admin"}
+							</p>
 						</div>
-					)}
+					</div>
+					{/* )} */}
 					<div className="lg:hidden">
 						<Sheet>
 							<SheetTrigger asChild>
@@ -123,7 +125,7 @@ function AppHeader() {
 										<Layout className="size-4 stroke-2" />
 										डैशबोर्ड (Dashboard)
 									</Link>
-									<Link
+									{/* <Link
 										href="/tasks"
 										className={cn(
 											"flex items-center gap-2 w-fit",
@@ -132,7 +134,7 @@ function AppHeader() {
 										)}>
 										<List className="size-4 stroke-2" />
 										टास्क्स (Tasks)
-									</Link>
+									</Link> */}
 									<Link
 										href="/staff"
 										className={cn(

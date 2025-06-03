@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import { RotateCw } from "lucide-react";
@@ -5,18 +6,16 @@ import { RotateCw } from "lucide-react";
 function PageHeader({
 	title,
 	description,
-	updatedAt,
 	refetch,
 }: {
 	title: string;
 	description: string;
-	updatedAt: Date;
 	refetch?: () => void;
 }) {
 	return (
-		<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center lg:gap-0 gap-4">
+		<div className="flex flex-col bg-background p-6 border-2 rounded-lg lg:flex-row lg:justify-between lg:items-center lg:gap-0 gap-4">
 			<div className="space-y-2">
-				<h1 className="text-3xl font-bold">{title}</h1>
+				<h1 className="text-3xl font-bold capitalize">{title}</h1>
 				<p className="text-sm text-muted-foreground">{description}</p>
 			</div>
 			<div className="flex items-center gap-2">
@@ -25,7 +24,7 @@ function PageHeader({
 					Refresh
 				</Button>
 				<p className="text-sm text-muted-foreground">
-					{updatedAt.toLocaleString("en-US", {
+					{new Date().toLocaleString("en-US", {
 						year: "numeric",
 						month: "long",
 						day: "numeric",
