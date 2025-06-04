@@ -2,6 +2,7 @@ import { useReport } from "@/hooks/useReport";
 import React from "react";
 import { format } from "date-fns";
 import { ArchiveX } from "lucide-react";
+import DashboardCards from "../cards/dashboard-cards";
 
 export interface WardReport {
 	wardName: string;
@@ -175,12 +176,37 @@ function ReportList({
 	generateReportData: Report[];
 	type: "full" | "wardwise";
 }) {
-	if (!generateReportData) return null;
+	if (!generateReportData)
+		return (
+			<DashboardCards title="रिपोर्ट (Generate Reports)">
+				<div className="h-64 flex flex-col items-center justify-center gap-1">
+					<ArchiveX size={60} />
+					<h2 className="text-xl font-semibold">
+						No report found, please generate a report first
+					</h2>
+				</div>
+			</DashboardCards>
+		);
 
-	return type === "full" ? (
-		<WardReportList reports={generateReportData as WardReport[]} />
+	return generateReportData.length > 0 && type === "full" ? (
+		<DashboardCards title="रिपोर्ट (Full Reports)">
+			<WardReportList reports={generateReportData as WardReport[]} />
+		</DashboardCards>
+	) : generateReportData.length > 0 && type === "wardwise" ? (
+		<DashboardCards title="रिपोर्ट (Wardwise Reports)">
+			<LocationReportList reports={generateReportData as LocationReport[]} />
+		</DashboardCards>
+	) : generateReportData.length === 0 ? (
+		<DashboardCards title="रिपोर्ट (No Reports Found)">
+			<div className="h-64 flex flex-col items-center justify-center gap-1">
+				<ArchiveX size={60} />
+				<h2 className="text-xl font-semibold">
+					No report found, please generate tasks first
+				</h2>
+			</div>
+		</DashboardCards>
 	) : (
-		<LocationReportList reports={generateReportData as LocationReport[]} />
+		<></>
 	);
 }
 

@@ -1,6 +1,7 @@
 // hooks/useTasks.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
+import { toast } from "sonner";
 
 interface Speed {
 	preprocess: number;
@@ -52,11 +53,30 @@ const URL = "http://localhost:3030/api/v1/assignments";
 export const useTasks = () => {
 	const queryClient = useQueryClient();
 
+	const getAssignments = (page = 1, limit = 10, query = {}) =>
+		useQuery({
+			queryKey: ["assignments", page, limit, query],
+			queryFn: () =>
+				axios.get(URL, {
+					params: { page, limit, ...query },
+					...axiosConfig,
+				}),
+		});
+
 	const createAssignment = useMutation({
 		mutationFn: (assignment: Assignment) =>
 			axios.post(URL, assignment, axiosConfig),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["assignments"] });
+		},
+	});
+
+	const autoGenerateTasks = useMutation({
+		mutationFn: () => axios.post(`${URL}/auto-assign`, {}, axiosConfig),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["assignments", "auto-assign"],
+			});
 		},
 	});
 
@@ -73,16 +93,6 @@ export const useTasks = () => {
 			queryClient.invalidateQueries({ queryKey: ["assignments"] });
 		},
 	});
-
-	const getAssignments = (page = 1, limit = 10, query = {}) =>
-		useQuery({
-			queryKey: ["assignments", page, limit, query],
-			queryFn: () =>
-				axios.get(URL, {
-					params: { page, limit, ...query },
-					...axiosConfig,
-				}),
-		});
 
 	const getAssignmentByUserId = (page = 1, limit = 10) =>
 		useQuery({
@@ -132,6 +142,7 @@ export const useTasks = () => {
 		createSubArea,
 		getAssignments,
 		getAssignmentByUserId,
+		autoGenerateTasks,
 		subAreaPrediction,
 	};
 };

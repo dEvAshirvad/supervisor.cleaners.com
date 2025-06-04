@@ -7,8 +7,15 @@ import DashboardCards from "@/components/cards/dashboard-cards";
 import EmployeeRankingList from "@/components/list/employee-ranking-list";
 import ActiveTasksList from "@/components/list/active-tasks-list";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useTasks } from "@/hooks/useTasks";
 
 export default function Home() {
+	const { autoGenerateTasks } = useTasks();
+
+	function handleAutoGenerateTasks() {
+		autoGenerateTasks.mutate();
+	}
 	return (
 		<>
 			<PageHeader
@@ -56,7 +63,13 @@ export default function Home() {
 					</Link>
 				</div>
 			</DashboardCards> */}
-			<DashboardCards title="सक्रिय कार्य (Active Tasks)">
+			<DashboardCards
+				title="सक्रिय कार्य (Active Tasks)"
+				sideComponent={
+					<Button size={"sm"} onClick={handleAutoGenerateTasks}>
+						Auto Generate
+					</Button>
+				}>
 				<ActiveTasksList />
 			</DashboardCards>
 		</>

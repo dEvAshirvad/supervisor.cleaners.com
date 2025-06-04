@@ -20,12 +20,11 @@ function Report() {
 			<DashboardCards title="रिपोर्ट फ़िल्टर (Report Filters)">
 				<ReportFilterForm generateReport={generateReport} />
 			</DashboardCards>
-			<DashboardCards title="रिपोर्ट (Reports)">
-				<ReportList
-					generateReportData={generateReport.data?.data}
-					type={generateReport.data?.type}
-				/>
-			</DashboardCards>
+
+			<ReportList
+				generateReportData={generateReport.data?.data}
+				type={generateReport.data?.type}
+			/>
 		</>
 	);
 }

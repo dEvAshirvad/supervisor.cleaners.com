@@ -10,11 +10,13 @@ function DashboardCards({
 	onRefresh,
 	title,
 	className,
+	sideComponent,
 }: {
 	children: React.ReactNode;
 	onRefresh?: () => void;
 	title: string;
 	className?: string;
+	sideComponent?: React.ReactNode;
 }) {
 	return (
 		<div
@@ -32,6 +34,7 @@ function DashboardCards({
 						<RotateCw /> Refresh
 					</Button>
 				)}
+				{sideComponent && sideComponent}
 			</div>
 			{children}
 		</div>

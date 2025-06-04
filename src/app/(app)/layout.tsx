@@ -4,19 +4,18 @@ import AppHeader from "./app-header";
 import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Toaster } from "@/components/ui/sonner";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
-	// const router = useRouter();
-	// const { data: session, isPending, error, refetch } = useSession();
+	const router = useRouter();
+	const { data: session, isPending, error, refetch } = useSession();
 
-	// if (isPending) return <div>Loading...</div>;
-	// if (error) return <div>Error: {error.message}</div>;
+	if (isPending) return <div>Loading...</div>;
+	if (error) return <div>Error: {error.message}</div>;
 
-	// if (!session || session.user?.role !== "supervisor") {
-	// 	router.push("/signin");
-	// }
-
-	// console.log(session);
+	if (!session || session.user?.role !== "admin") {
+		router.push("/signin");
+	}
 
 	return (
 		<div className="relative">
@@ -24,6 +23,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 			<div className="container px-6 mx-auto py-10 space-y-8 min-h-[calc(100vh-5rem)]">
 				{children}
 			</div>
+			<Toaster />
 			<Image
 				src="/background.png"
 				alt="app-bg"
